@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace Workshop.Student
@@ -30,16 +31,62 @@ namespace Workshop.Student
             // 2. create obstacles
 
             // 3. create floor
-
-            // 4. create walls
-
+            for (int y = 0; y < columns; y++)
+            {
+                for (int x = 0; x < columns; x++)
+                {
+                    int r = UnityEngine.Random.Range(0, floorTiles.Length);
+                    GameObject tile = Instantiate(floorTiles[0], new Vector2(x, y), Quaternion.identity);
+                    tile.name = "Floor" + x + "_" + y;
+                }
+            }
+                // 4. create walls
+                for (int y = -1; y < rows + 1; y++)
+            {
+                for (int x =  -1; x < columns+1; x++)
+                {
+                    if (x == -1 || x == columns ||y == -1 ||y == rows)
+                    {
+                        int r = UnityEngine.Random.Range(0, wallTiles.Length);
+                        GameObject tile = Instantiate (wallTiles[r], new Vector2(x,y), Quaternion.identity);
+                        tile.name = "wall" + x + "_" + y;
+                    }
+                }
+            }
             // 5. random foods
+            int numberOfFoods = UnityEngine.Random.Range(1, 3);
+            for(int i = 0;i< numberOfFoods; i++)
+            {
+                int x_food = UnityEngine.Random.Range(0, columns);
+                int y_food = UnityEngine.Random.Range(0, columns);
+                int r = UnityEngine.Random.Range(0,foodTiles.Length);
+                Instantiate(foodTiles[0], new Vector2(x_food, y_food), Quaternion.identity);
+            }
+            
+            
+                // 6. generate item along with the saveItemMap
+                for(int y = 0;y < saveItemMap.GetLength(0); y++)
+            {
+                for(int x = 0;x < saveItemMap.GetLength(1); x++)
+                {
+                    string item = saveItemMap[x,y];
+                    if (string.IsNullOrEmpty(item))
+                    {
+                        foreach (var foodTile in foodTiles)
+                        {
+                            if (foodTile.name == item)
+                            {
+                                GameObject food = Instantiate(foodTile,new Vector2(x,y), Quaternion.identity);
+                                food.name = "Food " + x + "_" + y;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+                // 7. place exit
 
-            // 6. generate item along with the saveItemMap
-
-            // 7. place exit
-
+            }
         }
-    }
 
 }

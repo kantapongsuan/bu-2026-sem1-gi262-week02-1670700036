@@ -12,24 +12,37 @@ namespace Workshop.Student
         public GameObject[] floorTiles;
         public GameObject[] wallTiles;
         public GameObject[] foodTiles;
+        public GameObject[] obstaclesTiles;
 
-        public string[,] saveItemMap = new string[3, 3] {
+        public string[,] saveItemMap = new string[3, 3] 
+        {
             { " ", "Soda", " "},
             { " ", " ", " "},
             { " ", " ", "Food"},
         };
 
         // 1. declare Players variable
-
+        public GameObject playerTiles;
         // 7. declare Exit variable 
-
+        public GameObject exitTiles;
 
         public void Start()
         {
             // 1. random player at the position <0, 0> map
-
+            int x_player = UnityEngine.Random.Range(0, columns);
+            int y_player = UnityEngine.Random.Range(0, rows);
+            GameObject Player = Instantiate(playerTiles, new Vector2(0, 0), Quaternion.identity);
+            Player.name = "Player " + x_player + "_" + y_player;
             // 2. create obstacles
-
+            if (wallTiles != null && wallTiles.Length > 0)
+            {
+                int x_obstacles = columns / 2;
+                for ( int y_obstacles = 0; y_obstacles < rows / 2; y_obstacles++)
+                {
+                    int r_obstacles = UnityEngine.Random.Range(0, wallTiles.Length);
+                    Instantiate(wallTiles[r_obstacles], new Vector2(x_obstacles, y_obstacles), Quaternion.identity);
+                }
+            }
             // 3. create floor
             for (int y = 0; y < columns; y++)
             {
@@ -41,7 +54,7 @@ namespace Workshop.Student
                 }
             }
                 // 4. create walls
-                for (int y = -1; y < rows + 1; y++)
+            for (int y = -1; y < rows + 1; y++)
             {
                 for (int x =  -1; x < columns+1; x++)
                 {
@@ -84,9 +97,12 @@ namespace Workshop.Student
                     }
                 }
             }
-                // 7. place exit
-
-            }
+            // 7. place exit
+            int x_exit = UnityEngine.Random.Range(0, columns);
+            int y_exit = UnityEngine.Random.Range(0, rows);
+            GameObject Exit = Instantiate(exitTiles, new Vector2(9, 9), Quaternion.identity);
+            Exit.name = "Player " + x_exit + "_" + y_exit;
+        }
         }
 
 }
